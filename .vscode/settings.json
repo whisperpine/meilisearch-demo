@@ -1,5 +1,10 @@
 {
+    "files.readonlyInclude": {
+        "Cargo.lock": true,
+        "LICENSE": true,
+    },
     "cSpell.words": [
+        "meili",
         "meilisearch"
     ]
 }
