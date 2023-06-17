@@ -1,10 +1,8 @@
 use anyhow::Result;
+use clap::{Parser, Subcommand};
 use meilisearch_sdk::client::Client;
 use serde::{Deserialize, Serialize};
 use std::sync::OnceLock;
-
-const CARGO_PKG_NAME: &str = env!("CARGO_PKG_NAME");
-const CARGO_PKG_VERSION: &str = env!("CARGO_PKG_VERSION");
 
 const DATA_FILE_PATH: &str = "movies.json";
 const INDEX_NAME: &str = "movies";
@@ -27,13 +25,36 @@ impl std::fmt::Display for Movie {
     }
 }
 
+#[derive(Debug, Parser)]
+#[command(author, version, about, long_about = None)]
+#[command(propagate_version = true)]
+struct Args {
+    #[command(subcommand)]
+    command: Command,
+}
+
+#[derive(Debug, Subcommand)]
+enum Command {
+    /// Send data to meili server
+    Send,
+    ///  Search with the given query
+    Search { query: String },
+}
+
 #[tokio::main]
 async fn main() -> Result<()> {
-    println!("CARGO_PKG_NAME: {}", CARGO_PKG_NAME);
     init_tracing().await;
     init_meili_client();
-    send_data().await?;
-    search("botman").await?;
+
+    let args = Args::parse();
+
+    match args.command {
+        Command::Send => send_data().await?,
+        Command::Search { query } => search(&query)
+            .await
+            .unwrap_or_else(|err| tracing::error!(?err)),
+    };
+
     Ok(())
 }
 
@@ -51,9 +72,6 @@ async fn init_tracing() {
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
-
-    tracing::info!("CARGO_PKG_NAME: {}", CARGO_PKG_NAME);
-    tracing::info!("CARGO_PKG_VERSION: {}", CARGO_PKG_VERSION);
 }
 
 /// Read json file from local dir, and send data to meili server.
@@ -91,8 +109,12 @@ pub async fn search(query: &str) -> Result<()> {
         .execute::<Movie>()
         .await?;
 
-    for item in response.hits.iter() {
-        tracing::info!(%item.result);
+    if response.hits.is_empty() {
+        tracing::warn!(r#"No searching result found with query: "{}""#, query);
+    } else {
+        for item in response.hits.iter() {
+            tracing::info!(%item.result);
+        }
     }
 
     Ok(())
