@@ -2,8 +2,8 @@ use anyhow::Result;
 use clap::{Parser, Subcommand};
 
 #[derive(Debug, Parser)]
-#[command(author, version, about, long_about = None)]
-#[command(propagate_version = true)]
+#[command(author, about, long_about = None)]
+#[command(version, propagate_version = true)]
 struct Args {
     #[command(subcommand)]
     command: Command,

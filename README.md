@@ -33,13 +33,18 @@ cargo run -- send
 cargo run -- search [QUERY]
 ```
 
+Besides searching in CLI, you can choose to search in a browser.
+
+As long as meili server has been startup and data has been sent (by command `cargo run -- send`),
+you can just go http://localhost:7700 and search.
+
 ## Note
 
 Meilisearch server needs time to index data.
 This may take a few seconds in this demo.
 
 After the indexing, log message can be found in meili server:
-"A batch of tasks was successfully completed."
+"A batch of tasks was successfully completed.",
 
 ```sh
 # Print meili server logs
