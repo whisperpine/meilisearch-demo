@@ -1,4 +1,5 @@
 mod movie;
+
 pub use movie::Movie;
 
 use anyhow::Result;
@@ -13,8 +14,8 @@ static MEILI_CLIENT: Lazy<Client> =
 
 /// Read json file from local dir, and send data to meili server.
 pub async fn send_data() -> Result<()> {
-    let content = tokio::fs::read_to_string(DATA_FILE_PATH).await?;
-    let movies_docs: Vec<Movie> = serde_json::from_str(&content)?;
+    let file = std::fs::File::open(DATA_FILE_PATH)?;
+    let movies_docs: Vec<Movie> = serde_json::from_reader(file)?;
 
     tracing::info!("Sending...");
     let task_info = MEILI_CLIENT

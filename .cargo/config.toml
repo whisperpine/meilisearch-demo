@@ -1,6 +1,0 @@
-# ----------------------------------------
-# Speed up crates downloading:
-# https://rust-lang.github.io/rfcs/2789-sparse-index.html
-# ----------------------------------------
-[registries.crates-io]
-protocol = "sparse"
