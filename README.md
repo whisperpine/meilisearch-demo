@@ -4,7 +4,7 @@ Project to demo [meilisearch](https://github.com/meilisearch/meilisearch) client
 
 ## Prerequisites
 
-[Docker](http://docker.com/) should be installed locally. \
+[Docker](http://docker.com/) should be installed locally.\
 This demo's `Minimum Supported Rust Version` is `1.70`.
 
 ## Meili Server
@@ -34,16 +34,16 @@ cargo run -- search [QUERY]
 
 Besides searching in CLI, you can choose to search in a browser.
 
-As long as meili server has been startup and data has been sent, \
+As long as meili server has been startup and data has been sent,\
 you can just go <http://localhost:7700> and search.
 
 ## Note
 
-Meilisearch server needs time to index data. \
+Meilisearch server needs time to index data.\
 This may take a few seconds in this demo.
 
-After the indexing, log message can be found in meili server: \
-"A batch of tasks was successfully completed.",
+After the indexing, log message can be found in meili server:\
+"A batch of tasks was successfully completed."
 
 ```sh
 # Print meili server logs
