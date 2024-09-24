@@ -1,0 +1,15 @@
+{
+    "files.associations": {
+        "LICENSE-MIT": "plain text",
+        "LICENSE-APACHE": "plain text",
+    },
+    "files.readonlyInclude": {
+        "LICENSE-MIT": true,
+        "LICENSE-APACHE": true,
+        "target/**": true
+    },
+    "cSpell.words": [
+        "meili",
+        "meilisearch"
+    ]
+}
