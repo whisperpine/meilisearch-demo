@@ -1,20 +1,4 @@
-// rustc
-#![cfg_attr(debug_assertions, allow(unused))]
-#![cfg_attr(not(debug_assertions), deny(missing_docs))]
-#![cfg_attr(not(debug_assertions), deny(clippy::unwrap_used))]
-#![cfg_attr(not(debug_assertions), deny(warnings))]
-// clippy
-#![cfg_attr(not(debug_assertions), deny(clippy::todo))]
-#![cfg_attr(
-    not(any(test, debug_assertions)),
-    deny(clippy::print_stdout, clippy::dbg_macro)
-)]
-
-mod movie;
-
-pub use movie::Movie;
-
-use anyhow::Result;
+use crate::Movie;
 use meilisearch_sdk::client::Client;
 use std::sync::LazyLock;
 
@@ -29,8 +13,10 @@ static MEILI_CLIENT: LazyLock<Client> = LazyLock::new(|| {
 });
 
 /// Read json file from local dir, and send data to meili server.
-pub async fn send_data() -> Result<()> {
-    let file = std::fs::File::open(DATA_FILE_PATH)?;
+pub async fn send_data() -> crate::Result<()> {
+    let Ok(file) = std::fs::File::open(DATA_FILE_PATH) else {
+        return Err(crate::Error::FileNotFound(DATA_FILE_PATH.to_owned()));
+    };
     let movies_docs: Vec<Movie> = serde_json::from_reader(file)?;
 
     tracing::info!("Sending...");
@@ -43,12 +29,11 @@ pub async fn send_data() -> Result<()> {
         "Data deserialized from {} has been sent to meili server.",
         DATA_FILE_PATH
     );
-
     Ok(())
 }
 
 /// Search with the given query.
-pub async fn search(query: &str) -> Result<()> {
+pub async fn search(query: &str) -> crate::Result<()> {
     use meilisearch_sdk::search::SearchQuery;
 
     tracing::info!(r#"Searching for "{}"..."#, query);
@@ -57,7 +42,6 @@ pub async fn search(query: &str) -> Result<()> {
         .with_query(query)
         .execute::<Movie>()
         .await?;
-
     if response.hits.is_empty() {
         tracing::warn!(r#"No searching result found with query: "{}""#, query);
     } else {
@@ -65,6 +49,5 @@ pub async fn search(query: &str) -> Result<()> {
             tracing::info!(%item.result);
         }
     }
-
     Ok(())
 }

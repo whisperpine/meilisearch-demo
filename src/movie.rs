@@ -1,5 +1,6 @@
 use serde::{Deserialize, Serialize};
 
+/// The deserialized data structure of `movies.json`
 #[derive(Serialize, Deserialize, Debug)]
 pub struct Movie {
     id: i64,

@@ -1,44 +1,41 @@
-use anyhow::Result;
-use clap::{Parser, Subcommand};
+//! A demo project for meilisearch client.
 
-#[derive(Debug, Parser)]
-#[command(author, about, long_about = None)]
-#[command(version, propagate_version = true)]
-struct Args {
-    #[command(subcommand)]
-    command: Command,
-}
+// rustc
+#![cfg_attr(debug_assertions, allow(unused))]
+#![cfg_attr(not(debug_assertions), deny(missing_docs))]
+#![cfg_attr(not(debug_assertions), deny(clippy::unwrap_used))]
+#![cfg_attr(not(debug_assertions), deny(warnings))]
+// clippy
+#![cfg_attr(not(debug_assertions), deny(clippy::todo))]
+#![cfg_attr(
+    not(any(test, debug_assertions)),
+    deny(clippy::print_stdout, clippy::dbg_macro)
+)]
 
-#[derive(Debug, Subcommand)]
-enum Command {
-    /// Send data to meili server
-    Send,
-    /// Search with the given query
-    Search { query: String },
-}
+mod cli;
+mod error;
+mod meili;
+mod movie;
+
+pub use cli::app;
+pub use error::{Error, Result};
+pub use meili::{search, send_data};
+pub use movie::Movie;
 
 #[tokio::main]
-async fn main() -> Result<()> {
-    use meilisearch_demo::{search, send_data};
-
-    init_tracing();
-
-    let args = Args::parse();
-    match args.command {
-        Command::Send => send_data().await?,
-        Command::Search { query } => search(&query).await?,
-    };
-
-    Ok(())
+async fn main() {
+    init_tracing_subscriber();
+    cli::app().await.unwrap_or_else(|x| tracing::error!("{x}"));
 }
 
-fn init_tracing() {
+fn init_tracing_subscriber() {
     use tracing_subscriber::layer::SubscriberExt;
     use tracing_subscriber::util::SubscriberInitExt;
 
     tracing_subscriber::registry()
         .with(
-            tracing_subscriber::EnvFilter::try_from_default_env().unwrap_or_else(|_| "info".into()),
+            tracing_subscriber::EnvFilter::try_from_default_env()
+                .unwrap_or_else(|_| format!("{}=info", env!("CARGO_CRATE_NAME")).into()),
         )
         .with(tracing_subscriber::fmt::layer())
         .init();
