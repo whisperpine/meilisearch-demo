@@ -5,13 +5,13 @@ A demo project for exprimenting
 
 ## Prerequisites
 
-- [Docker](http://docker.com/) should be installed locally
+- Docker should be installed locally
 and make sure `docker compose` is available.
 - MSRV (Minimum Supported Rust Version) of this demo is `1.85`.
 
-## Meili Server
+## Meilisearch Server
 
-Be sure to startup meilisearch server before running client.
+Be sure to spin up meilisearch server before running client.
 
 ```sh
 # Startup meilisearch server.
@@ -25,7 +25,7 @@ After everything, remember to remove the container.
 docker compose down -v
 ```
 
-## Meili Client
+## Meilisearch Client
 
 ```sh
 # Send data to meili server.
@@ -34,18 +34,19 @@ cargo run -- send
 cargo run -- search [QUERY]
 ```
 
-Besides searching in CLI, you may also choose to search in the browser.\
-After meili server has startup and data has been sent,
-visit <http://localhost:7700> to search.
+In addition to searching in CLI, you may also choose to search in the browser.
+After meilisearch server has spinned up and data has been sent,
+visit <http://localhost:7700> to try out searching in the webpage.
 
 ## Remark
 
 Meilisearch server needs time to index data,
-which may take a few seconds in this demo.\
+which may take a few seconds in this demo.
 You won't get searching result until the indexing has done.
+After the indexing, the following log can be found in meili server:
 
-After the indexing, log message can be found in meili server:\
-"A batch of tasks was successfully completed."
+> "A batch of tasks was successfully completed with 1 successful tasks and 0
+> failed tasks."
 
 ```sh
 # Print and follow meili server logs.
