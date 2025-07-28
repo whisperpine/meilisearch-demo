@@ -1,0 +1,20 @@
+name: Checks
+
+on:
+  pull_request:
+  push:
+    branches: ["main"]
+
+jobs:
+  typos:
+    runs-on: ubuntu-latest
+    name: check misspelling by typos
+    steps:
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v31
+      - name: Run typos command
+        shell: nix shell nixpkgs#typos --quiet --command bash {0}
+        run: |
+          typos --hidden --exclude .git \
+            --no-check-files ./movies.json \
+            --format brief
