@@ -1,11 +1,12 @@
-# README
+# Meilisearch Demo
 
-A demo project for [meilisearch](https://github.com/meilisearch/meilisearch) client.
+A demo project for exprimenting
+[meilisearch](https://github.com/meilisearch/meilisearch) client.
 
 ## Prerequisites
 
 - [Docker](http://docker.com/) should be installed locally
-and make sure `docker compose`is available.
+and make sure `docker compose` is available.
 - MSRV (Minimum Supported Rust Version) of this demo is `1.85`.
 
 ## Meili Server
@@ -37,7 +38,7 @@ Besides searching in CLI, you may also choose to search in the browser.\
 After meili server has startup and data has been sent,
 visit <http://localhost:7700> to search.
 
-## Notes
+## Remark
 
 Meilisearch server needs time to index data,
 which may take a few seconds in this demo.\
