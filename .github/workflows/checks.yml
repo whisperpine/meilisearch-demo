@@ -18,3 +18,31 @@ jobs:
           typos --hidden --exclude .git \
             --no-check-files ./movies.json \
             --format brief
+
+  cargo-clippy:
+    runs-on: ubuntu-latest
+    name: lint rust code by clippy
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: clippy
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+      - name: Run cargo clippy
+        run: cargo clippy --release -- -D warnings
+
+  cargo-doc:
+    runs-on: ubuntu-latest
+    name: lint rust docstring by rustdoc
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rust-docs
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+      - name: Run cargo doc
+        run: cargo doc
