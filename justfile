@@ -9,3 +9,7 @@ send:
 # search with the given query by meilisearch-demo
 search *PATTERN:
   cargo run -- search {{PATTERN}}
+
+# check health of the meilisearch server
+health:
+  curl http://localhost:7700/health
