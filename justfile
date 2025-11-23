@@ -1,3 +1,7 @@
+# list all available subcommands
+_default:
+  @just --list
+
 # show the help message of meilisearch-demo
 help:
   cargo run -- help
