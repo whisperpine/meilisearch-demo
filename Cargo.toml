@@ -1,3 +1,7 @@
+# ------- #
+# package
+# ------- #
+
 [package]
 name = "meilisearch-demo"
 version = "0.1.0-alpha"
@@ -7,10 +11,18 @@ repository = "https://github.com/whisperpine/meilisearch-demo"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
 
+# ------- #
+# profile
+# ------- #
+
 [profile.release]
 lto = "thin"
 strip = "symbols"
 panic = "abort"
+
+# ------------ #
+# dependencies
+# ------------ #
 
 [dependencies]
 clap = { version = "4.5.34", features = ["derive", "cargo"] }
@@ -22,49 +34,45 @@ tokio = { version = "1.47.0", features = ["full"] }
 tracing = "0.1.41"
 tracing-subscriber = { version = "0.3.19", features = ["env-filter"] }
 
-# rustc lints (https://doc.rust-lang.org/rustc/lints/index.html)
+# ------------- #
+# linting rules
+# ------------- #
+
+# Rustc lints (https://doc.rust-lang.org/rustc/lints/index.html).
 [lints.rust]
 # lint groups (https://doc.rust-lang.org/rustc/lints/groups.html)
-rust-2024-compatibility = { level = "warn", priority = -1 }
-future-incompatible = { level = "deny", priority = -1 }
 deprecated-safe = { level = "deny", priority = -1 }
+future-incompatible = { level = "deny", priority = -1 }
+keyword-idents = { level = "deny", priority = -1 }
+rust-2024-compatibility = { level = "warn", priority = -1 }
 # lint listing (https://doc.rust-lang.org/rustc/lints/listing/index.html)
 missing_debug_implementations = "deny"
 unreachable_pub = "deny"
 unsafe_code = "forbid"
 
-# rustdoc lints (https://doc.rust-lang.org/rustdoc/lints.html)
+# Rustdoc lints (https://doc.rust-lang.org/rustdoc/lints.html).
 [lints.rustdoc]
 broken_intra_doc_links = "deny"
 unescaped_backticks = "deny"
 
-# clippy lints (https://rust-lang.github.io/rust-clippy/master/index.html)
+# Clippy lints (https://rust-lang.github.io/rust-clippy/stable/index.html).
 [lints.clippy]
-cast_sign_loss = "warn"
-cast_possible_wrap = "warn"
-cast_possible_truncation = "warn"
-cast_precision_loss = "warn"
-integer_division = "warn"
-checked_conversions = "warn"
-inefficient_to_string = "warn"
+# Clippy lint groups (https://doc.rust-lang.org/stable/clippy/lints.html).
+correctness = { level = "warn", priority = -1 }
+suspicious = { level = "warn", priority = -1 }
+complexity = { level = "warn", priority = -1 }
+style = { level = "warn", priority = -1 }
+perf = { level = "warn", priority = -1 }
+pedantic = { level = "warn", priority = -1 }
+# Indivisual clippy lints (https://rust-lang.github.io/rust-clippy/stable/index.html).
+needless_pass_by_value = "allow"
 rest_pat_in_fully_bound_structs = "warn"
-match_wildcard_for_single_variants = "warn"
-fn_params_excessive_bools = "warn"
-unnested_or_patterns = "warn"
-verbose_file_reads = "warn"
-uninlined_format_args = "warn"
-needless_continue = "warn"
-allow_attributes = "warn"
 lossy_float_literal = "warn"
-option_option = "warn"
-macro_use_imports = "warn"
-str_to_string = "warn"
+empty_enum_variants_with_brackets = "warn"
+verbose_file_reads = "warn"
 suboptimal_flops = "warn"
-enum_glob_use = "warn"
-filter_map_next = "warn"
+str_to_string = "warn"
+integer_division = "warn"
+allow_attributes = "warn"
 imprecise_flops = "warn"
-unused_self = "warn"
-empty_enum = "warn"
-linkedlist = "warn"
-mem_forget = "warn"
 exit = "warn"
