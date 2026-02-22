@@ -9,10 +9,14 @@ static MEILI_CLIENT: LazyLock<Client> = LazyLock::new(|| {
     let meilisearch_url: &str = option_env!("MEILISEARCH_URL").unwrap_or("http://localhost:7700");
     let meilisearch_api_key: &str = option_env!("MEILISEARCH_API_KEY").unwrap_or("masterKey");
     Client::new(meilisearch_url, Some(meilisearch_api_key))
-        .expect("failed to create meilisearch client")
+        .expect("Failed to create meilisearch client.")
 });
 
 /// Read json file from local dir, and send data to meili server.
+///
+/// # Errors
+///
+/// Returns Err if fails to add documents to meili server.
 pub async fn send_data() -> crate::Result<()> {
     let Ok(file) = std::fs::File::open(DATA_FILE_PATH) else {
         return Err(crate::Error::FileNotFound(DATA_FILE_PATH.to_owned()));
@@ -33,6 +37,10 @@ pub async fn send_data() -> crate::Result<()> {
 }
 
 /// Search with the given query.
+///
+/// # Errors
+///
+/// Returns Err if fails to execute the query.
 pub async fn search(query: &str) -> crate::Result<()> {
     use meilisearch_sdk::search::SearchQuery;
 
@@ -43,9 +51,9 @@ pub async fn search(query: &str) -> crate::Result<()> {
         .execute::<Movie>()
         .await?;
     if response.hits.is_empty() {
-        tracing::warn!(r#"No searching result found with query: "{}""#, query);
+        tracing::warn!(r#"No searching result found with query: "{}"."#, query);
     } else {
-        for item in response.hits.iter() {
+        for item in &response.hits {
             tracing::info!(%item.result);
         }
     }

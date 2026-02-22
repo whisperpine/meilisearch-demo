@@ -17,6 +17,10 @@ enum Command {
 }
 
 /// Parse and run command.
+///
+/// # Errors
+///
+/// Returns Err if any of the subcommands returns Err.
 pub async fn app() -> crate::Result<()> {
     use crate::{search, send_data};
 
@@ -24,6 +28,6 @@ pub async fn app() -> crate::Result<()> {
     match args.command {
         Command::Send => send_data().await?,
         Command::Search { query } => search(&query).await?,
-    };
+    }
     Ok(())
 }
