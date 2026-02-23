@@ -10,9 +10,9 @@ struct Args {
 
 #[derive(Debug, Subcommand)]
 enum Command {
-    /// Send data to meili server
+    /// Send data to meili server.
     Send,
-    /// Search with the given query
+    /// Search with the given query.
     Search { query: String },
 }
 
