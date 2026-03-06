@@ -47,7 +47,7 @@
           #   extensions = [ "rust-src" ];
           #   targets = [ ];
           # };
-          rust.nightly."2026-01-12".default.override {
+          rust.nightly."2026-02-15".default.override {
             extensions = [ "rust-src" ];
             targets = [ ];
           };
