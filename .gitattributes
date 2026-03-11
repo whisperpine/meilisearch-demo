@@ -6,3 +6,5 @@
 flake.nix -linguist-detectable
 # Remove .envrc from repo statistics.
 .envrc -linguist-detectable
+# Remove justfile from repo statistics.
+justfile -linguist-detectable
