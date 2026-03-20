@@ -45,4 +45,5 @@ jobs:
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
       - name: Run cargo doc
-        run: cargo doc
+        run: |
+          RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
