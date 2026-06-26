@@ -7,8 +7,8 @@ on:
 
 jobs:
   typos:
-    runs-on: ubuntu-latest
     name: check misspelling by typos
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - uses: cachix/install-nix-action@v31
@@ -20,8 +20,8 @@ jobs:
             --format brief
 
   cargo-clippy:
-    runs-on: ubuntu-latest
     name: lint rust code by clippy
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Install Rust
@@ -34,8 +34,8 @@ jobs:
         run: cargo clippy --release -- -D warnings
 
   cargo-doc:
-    runs-on: ubuntu-latest
     name: lint rust docstring by rustdoc
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
       - name: Install Rust
@@ -47,3 +47,17 @@ jobs:
       - name: Run cargo doc
         run: |
           RUSTDOCFLAGS="-D warnings" cargo doc --no-deps
+
+  cargo-fmt:
+    name: check rust formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - name: Install Rust
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          components: rustfmt
+      - name: Cache Rust dependencies
+        uses: Swatinem/rust-cache@v2
+      - name: Run cargo fmt
+        run: cargo fmt --check
