@@ -31,7 +31,10 @@ jobs:
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
       - name: Run cargo clippy
-        run: cargo clippy --release -- -D warnings
+        run: |
+          cargo clippy --release -- -D warnings
+          cargo clippy --examples --release -- -D warnings
+          cargo clippy --tests -- -D warnings
 
   cargo-doc:
     name: lint rust docstring by rustdoc
