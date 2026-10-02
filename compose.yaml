@@ -3,7 +3,7 @@ volumes:
 
 services:
   meilisearch:
-    image: getmeili/meilisearch:v1.48
+    image: getmeili/meilisearch:v1.54
     restart: unless-stopped
     ports:
       - 7700:7700
